@@ -1,0 +1,81 @@
+run:
+  mode: safe
+  headless: false
+  daily_cap: 100
+  min_interval_sec: 60
+  max_interval_sec: 180
+  jitter: 0.25
+  blackout:
+    - { start: "00:00", end: "06:00" }
+  max_errors_per_hour: 3
+  hard_stop_on_error: true
+browser:
+  channel: chrome
+  storage_state: ./data/session.json
+credentials:
+  applicationId: YOUR_RAKUTEN_APP_ID
+  affiliateId: YOUR_AFFILIATE_ID
+sources:
+  keywords: ["加湿器", "ワイヤレスイヤホン"]
+  exclude_keywords: ["中古", "アウトレット"]
+  genre_ids: ["100371", "558944"]
+  min_price: 1000
+  max_price: 30000
+  min_review_count: 50
+  min_review_average: 3.8
+  availability_only: true
+priority:
+  genre_weights:
+    default: 1.0
+    "100371": 1.4
+    "558944": 1.3
+  genre_quotas:
+    default: 0
+    "100371": 30
+    "558944": 20
+    others: 50
+shops:
+  allowlist: []
+  denylist: ["ng_shop_foo"]
+policy:
+  banned_terms: ["必ず", "絶対", "100%", "副作用", "治る", "痩せる", "クリックして"]
+  banned_regex:
+    - id: yakki
+      pattern: "(痩せる|治る|完治|効果覿面|副作用なし)"
+      severity: block
+  exceptions_terms: ["非医薬品", "医薬部外品"]
+copy:
+  max_len: 160
+  add_pr_tag: true
+  variants_per_item: 3
+  hashtag_presets: ["#おすすめ", "#楽天ROOM", "#PR"]
+etl:
+  enabled: true
+  watch_dir: ./drop
+  schedule: monthly
+  csv_mapping:
+    item_code: "商品番号"
+    clicks: "クリック数"
+    purchases: "購入件数"
+    revenue: "売上金額"
+    points: "成果報酬"
+llm:
+  provider: openai
+  openai:
+    api_key: ""
+    model: gpt-4o-mini
+    mode: responses
+    temperature: 0.7
+    max_tokens: 280
+  anthropic:
+    api_key: ""
+    model: claude-3-haiku
+  google:
+    api_key: ""
+    model: gemini-1.5-flash
+  groq:
+    api_key: ""
+    model: llama-3.1-70b-versatile
+  local:
+    endpoint: http://localhost:11434
+    model: llama3.1
