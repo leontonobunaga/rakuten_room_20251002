@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+config/config.yaml
+config/session.json
+config/*.local.yaml
+.DS_Store
